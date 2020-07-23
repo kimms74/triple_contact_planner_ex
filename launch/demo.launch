@@ -1,0 +1,5 @@
+<launch>
+    <node name="example" pkg="triple_contact_planner" type="example" output="screen" /> 
+</launch>
+
+<!-- launch-prefix="gdb -ex run -args " -->
