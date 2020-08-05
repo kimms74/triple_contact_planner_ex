@@ -121,7 +121,9 @@ namespace suhan_contact_planner
       {
         // TODO: Force update!
         // TODO: Contact copy is needed!
+        // std::cout << result.segment<6>(i * 6).transpose() << std::endl;
         contacts[i]->setContactForceTorque(result.segment<6>(i * 6));
+        // std::cout << contacts[i]->getContactForceTorque().transpose() << std::endl;
       }
       return true;
     }

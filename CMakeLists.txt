@@ -14,6 +14,7 @@ if(NOT EIGEN3_INCLUDE_DIRS)
   set(EIGEN3_INCLUDE_DIRS ${EIGEN3_INCLUDE_DIR})
 endif()
 
+# find_package(regrasp_constraint_planner REQUIRED)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   tf2
@@ -21,6 +22,7 @@ find_package(catkin REQUIRED COMPONENTS
   moveit_core
   moveit_ros_planning
   moveit_ros_planning_interface
+  
 )
 
 catkin_package(
@@ -39,7 +41,7 @@ include_directories(
 )
 
 ## Declare a C++ library
-add_library(triple_contact_planner
+add_library(${PROJECT_NAME}_lib
 
   src/contact/contact.cpp
   src/contact_model/contact_model.cpp
@@ -56,23 +58,24 @@ add_library(triple_contact_planner
 
 )
 
-add_dependencies(triple_contact_planner ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(${PROJECT_NAME}_lib ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# add_dependencies(triple_contact_planner regrasp_constraint_planner)
 
-
+# link_directories("/home/jiyeong/catkin_ws/devel/lib")
 #set_property(TARGET triple_contact_planner PROPERTY POSITION_INDEPENDENT_CODE ON)
-target_link_libraries (triple_contact_planner
+target_link_libraries (${PROJECT_NAME}_lib
   qpOASES
 )
 
-add_executable(example src/example.cpp)
-target_link_libraries (example
+add_executable(${PROJECT_NAME} src/main.cpp)
+target_link_libraries (${PROJECT_NAME}
   ${catkin_LIBRARIES}
   qpOASES
-  triple_contact_planner
+  ${PROJECT_NAME}_lib
   yaml-cpp
 )
 
-install(TARGETS ${PROJECT_NAME}
+install(TARGETS ${PROJECT_NAME}_lib
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -85,3 +88,11 @@ install(DIRECTORY include/${PROJECT_NAME}/
   PATTERN ".svn" EXCLUDE
 )
 
+# add_executable(filtering src/filter_by_distance.cpp)
+# target_link_libraries (filtering
+#   ${catkin_LIBRARIES}
+#   qpOASES
+#   triple_contact_planner
+#   yaml-cpp
+  
+# )

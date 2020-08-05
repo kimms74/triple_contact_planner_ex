@@ -35,7 +35,7 @@ int main(int argc, char **argv)
   com_T.translation() = -com;
 
   std::vector<ContactPtr> contact_nodes_;
-  contact_nodes_.resize(3);
+  contact_nodes_.resize(2);
 
   for (auto &p : contact_nodes_)
     p = make_shared<Contact>();
@@ -62,52 +62,64 @@ int main(int argc, char **argv)
   vector<vector<double>> ratio_combination;
   vector<double> test;
   DFS(ratio_combination, test);
-  
+
   std::ofstream file;
-  file.open(path + "/static_eq_grp.yaml");
+  file.open(path + "/test_static_eq_grp.yaml");
 
   Eigen::IOFormat CommaInitFmt(Eigen::StreamPrecision, Eigen::DontAlignCols, ", ", ", ", "", "", "[", "]");
   int i = 0;
-  std::pair<Eigen::Affine3d, std::string> result1, result2, result3;
+  tuple<Eigen::Affine3d, std::string, double> result[3];
   for (auto combination : tot_combination)
   {
     for (auto ratio_combi : ratio_combination)
     {
       for (int j = 0; j < grp_bottom.candids_set[combination[0]].size(); j++)
       {
-        result1 = grp_bottom.getGrasp(combination[0], j, ratio_combi[0]);
-        contact_nodes_.at(0)->setTransform(com_T * result1.first);
+        result[0] = grp_bottom.getGrasp(combination[0], j, ratio_combi[0]);
+        contact_nodes_.at(0)->setTransform(com_T * get<0>(result[0]));
 
         for (int k = 0; k < grp_bottom.candids_set[combination[1]].size(); k++)
         {
-          result2 = grp_bottom.getGrasp(combination[1], k, ratio_combi[1]);
-          contact_nodes_.at(1)->setTransform(com_T * result2.first);
-          
-          for (int m = 0; m < grp_top.candids_set[combination[2]].size(); m++)
+          result[1] = grp_bottom.getGrasp(combination[1], k, ratio_combi[1]);
+          contact_nodes_.at(1)->setTransform(com_T * get<0>(result[1]));
+
+          model->setContactRobot(contact_nodes_);
+          op.setModel(model);
+          if (op.solve())
           {
-            result3 = grp_top.getGrasp(combination[2], m, ratio_combi[2]);
-            contact_nodes_.at(2)->setTransform(com_T * result3.first);
-        
-            model->setContactRobot(contact_nodes_);
-          
-            model->copyContactRobot();
-            op.setModel(model);
-            if (op.solve())
-            {
-              file << "    - part num : [" << combination[0] << ", " << combination[1] << ", " << combination[2] << "]" << endl
-                   << "      index : [" << j << ", " << k << ", " << m << "]" << endl
-                   << "      ratio : [" << ratio_combi[0] << ", " << ratio_combi[1] << ", " << ratio_combi[2] << "]" << endl
-                   << "        ori : [" << result1.second << ", " << result2.second << ", " << result3.second << "]" << endl;
-              file << "      force 1 : " << contact_nodes_.at(0)->getContactForceTorque().transpose().format(CommaInitFmt) << endl
-                   << "      force 2 : " << contact_nodes_.at(1)->getContactForceTorque().transpose().format(CommaInitFmt) << endl
-                   << "      force 3: " << contact_nodes_.at(2)->getContactForceTorque().transpose().format(CommaInitFmt) << endl;
-                i++;
-            }  
-            else
-            {
-              cout << "no" << endl;
-            }
-                      
+            file << "- part num : [" << combination[0] + 1 << ", " << combination[1] + 1 <<  "]" << endl
+                 << "  index : [" << j << ", " << k << "]" << endl
+                 << "  ratio : [" << ratio_combi[0] << ", " << ratio_combi[1] << ", " << "]" << endl
+                 << "  ori : [" << get<1>(result[0]) << ", " << get<1>(result[1]) << "]" << endl;
+            file << "  force 1 : " << contact_nodes_.at(0)->getContactForceTorque().transpose().format(CommaInitFmt) << endl
+                 << "  force 2 : " << contact_nodes_.at(1)->getContactForceTorque().transpose().format(CommaInitFmt) << endl;
+            // offset
+            // for (int t = 0; t < 3; t++)
+            //   get<0>(result[t]).translation() += get<0>(result[t]).linear() * Eigen::Vector3d(0, 0, -0.103);
+
+            // Eigen::VectorXd t1(7), t2(7), t3(7);
+            // t1 << get<0>(result[0]).translation() + get<0>(result[0]).linear() * Eigen::Vector3d(0, 0, -0.103),
+            //     Eigen::Quaterniond(get<0>(result[0]).linear()).coeffs();
+            // t2 << get<0>(result[1]).translation() + get<0>(result[1]).linear() * Eigen::Vector3d(0, 0, -0.103),
+            //     Eigen::Quaterniond(get<0>(result[1]).linear()).coeffs();
+            // t3 << get<0>(result[2]).translation() + get<0>(result[2]).linear() * Eigen::Vector3d(0, 0, -0.103),
+            //     Eigen::Quaterniond(get<0>(result[2]).linear()).coeffs();
+            // t3 << Eigen::Map<Eigen::VectorXd>( ( get<0>(result[2]).translation()+ get<0>(result[2]).linear()*Eigen::Vector3d(0, 0, -0.103)).data(), 3)  ,
+            //                                   Eigen::Quaterniond(get<0>(result[2]).linear()).coeffs();
+
+            // Eigen::VectorXd t1(Eigen::Map<Eigen::VectorXd>(get<0>(result[0]).matrix().data(), 16));
+            // Eigen::VectorXd t2(Eigen::Map<Eigen::VectorXd>(get<0>(result[1]).matrix().data(), 16));
+            // Eigen::VectorXd t3(Eigen::Map<Eigen::VectorXd>(get<0>(result[2]).matrix().data(), 16));
+            // file << "  transform1 : " << t1.transpose().format(CommaInitFmt) << endl
+            //      << "  transform2 : " << t2.transpose().format(CommaInitFmt) << endl
+            //      << "  transform3 : " << t3.transpose().format(CommaInitFmt) << endl;
+            //  << "  transform1 : " << endl
+            //  << get<0>(result[0]).matrix() << endl
+            //  << "  transform2 : " << endl
+            //  << get<0>(result[1]).matrix() << endl
+            //  << "  transform3 : " << endl
+            //  << get<0>(result[2]).matrix() << endl;
+            i++;
           }
         }
       }

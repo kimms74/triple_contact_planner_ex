@@ -42,7 +42,7 @@ bool ContactOptimizationSolver::solve(Eigen::VectorXd& result_force)
   int result;
   A_row_ = A_;
   // qproblem_.setPrintLevel(qpOASES::PL_DEBUG_ITER);
-  qproblem_.printProperties();
+  
   if(!hot_start_)
   {
     result = qproblem_.init(H_row_.data(), g_.data(), A_row_.data(),

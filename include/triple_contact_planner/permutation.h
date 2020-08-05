@@ -48,7 +48,7 @@ void DFS(vector<vector<T>> &combinations, vector<T> &set)
         return;
     }
  
-    for (int i = 0; i * step_size <= 1; ++i)
+    for (int i = 1; i * step_size < 1; ++i)
     {
         set.emplace_back(i * step_size);
         DFS(combinations, set);

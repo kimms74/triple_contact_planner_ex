@@ -11,7 +11,7 @@ public:
   bool isReachable(Eigen::Vector3d position) override
   {
     // ROS_INFO("%lf %lf %lf", position[0], position[1], position[2]);
-    std::cout << position.transpose() << std::endl;
+
     return (position.norm() < 100);
   }
   bool isPossibleContact(Eigen::Affine3d transform) override { return true; }
@@ -27,8 +27,8 @@ public:
     {
       // limit_matrix(0, i) = 1;
       // limit_matrix(1, i) = -10;
-      limit_matrix(0, i) = -15;
-      limit_matrix(1, i) = -15;
+      limit_matrix(0, i) = -20;
+      limit_matrix(1, i) = -20;
     }
     return limit_matrix;
   }
