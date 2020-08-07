@@ -10,25 +10,26 @@
 namespace suhan_contact_planner
 {
 
-/**
- * @brief The ContactModel class
+/**                                             //Doxygen을 이용한 코드상의 주석을 통해 문서를 만들어내는 방법
+ * @brief The ContactModel class                //class에 대한 주석: brief,details,author,date,version
  */
 class ContactModel
 {
 public:
-  ContactModel() : name_("") {}
+  ContactModel() : name_("") {}                 //변수 초기화
   ContactModel(std::string name) : name_(name) {}
 
-  enum OperationDirection : int {DIR_Z=0, DIR_Y, DIR_X, DIR_YAW, DIR_PITCH, DIR_ROLL};
-
-  void contactWrenchOptimize();
+  enum OperationDirection : int {DIR_Z=0, DIR_Y, DIR_X, DIR_YAW, DIR_PITCH, DIR_ROLL};  //enum: user-defined data types, DIR_Z=0이라고 지정해두면 나머지는 1씩 커지는 수가 해당 이름에 들어가는 값이 된다.
+                                                                                        //class 안에서만 쓰이는 type일 경우 class안에 enum을 만들어 쓴다
+  void contactWrenchOptimize();                                                         //다른 cpp 파일에 있는  함수를 쓰기위해 forward declaration한 것
 
   /**
    * @brief createContactSamples
    */
-  virtual void createContactSamples(std::vector<ContactPtr> &contact_samples) = 0;
-
-  /**
+  virtual void createContactSamples(std::vector<ContactPtr> &contact_samples) = 0;      //ContactPtr: contatct.h
+                                                                                        //virtual: base class에서 선언했지만 derived class에서 사용하면 derived class인 것처럼 행동한다
+                                                                                        //즉, derived class마다 다른 성질을 가짐
+  /**                                           //method에 대한 주석:brief,details,param,return,throws
    * @brief operation
    * @param dir Direction we want to move
    * @param delta
@@ -76,7 +77,7 @@ public:
   void printContacts();
   void printAbsoulteContactPositions();
 
-protected:
+protected:                                        //protected: derived class에서만 public처럼 사용가능
   std::string name_;
   Eigen::Affine3d transform_;
   Eigen::Vector3d centor_of_mass_ {0, 0, 0};

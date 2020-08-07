@@ -16,15 +16,15 @@ int main(int argc, char **argv)
 {
   ros::init(argc, argv, "suhan_contact_planner_ex");
   ros::NodeHandle nh;
-  std::string path = ros::package::getPath("triple_contact_planner");
+  std::string path = ros::package::getPath("triple_contact_planner");     //triple_contact_planner 위치 가져옴
 
-  ContinuousGraspCandid grp_top;
-  grp_top.loadConfig(path + "/top.yaml");
+  ContinuousGraspCandid grp_top;                                          //cont_reader.h
+  grp_top.loadConfig(path + "/top.yaml");                                 //path로 triple_contact_planner있는 위치 가져오고 뒤에 /top.yaml해서 top.yaml을 불러오는 것
 
   ContinuousGraspCandid grp_bottom;
   grp_bottom.loadConfig(path + "/bottom.yaml");
 
-  ContactOptimization op;
+  ContactOptimization op;                                                 //contact_optimization.h
   RobotDynamicsModelPtr robot_model = make_shared<DexterousRobotModel>();
   op.setRobot(robot_model);
 
@@ -32,7 +32,7 @@ int main(int argc, char **argv)
   com << -0.40664, 0.12478, 0.18233;
   Eigen::Affine3d com_T;
   com_T.setIdentity();
-  com_T.translation() = -com;
+  com_T.translation() = -com; //center of mass
 
   std::vector<ContactPtr> contact_nodes_;
   contact_nodes_.resize(3);
