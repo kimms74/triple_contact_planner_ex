@@ -20,7 +20,7 @@ public:
   ContactModel(std::string name) : name_(name) {}
 
   enum OperationDirection : int {DIR_Z=0, DIR_Y, DIR_X, DIR_YAW, DIR_PITCH, DIR_ROLL};  //enum: user-defined data types, DIR_Z=0이라고 지정해두면 나머지는 1씩 커지는 수가 해당 이름에 들어가는 value가 된다.
-                                                                                        //class 안에서만 쓰이는 type일 경우 class안에 enum을 만들어 쓴다
+                                                                                        //class 안에서만 쓰이는 type일 경우 class안에 enum을 만들어 쓰는게 좋다(enum보단 enum class쓰기)
   void contactWrenchOptimize();                                                         //다른 cpp 파일에 있는  함수를 쓰기위해 forward declaration한 것
 
   /**
