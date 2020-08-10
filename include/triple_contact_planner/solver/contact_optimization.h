@@ -16,7 +16,7 @@ class ContactOptimization
 public:
   void setModel(ContactModelPtr model);       //contact_model.h
   void setRobot(RobotDynamicsModelPtr robot); //robot_dynamics_model.h
-  bool solve();
+  bool solve();                               //test
 
 private:
   ContactModelPtr model_;
