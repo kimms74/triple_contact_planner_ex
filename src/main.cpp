@@ -25,9 +25,9 @@ int main(int argc, char **argv)
   grp_bottom.loadConfig(path + "/bottom.yaml");
 
   ContactOptimization op;                                                 //contact_optimization.h
-  RobotDynamicsModelPtr robot_model = make_shared<DexterousRobotModel>();
-  op.setRobot(robot_model);
-
+  RobotDynamicsModelPtr robot_model = make_shared<DexterousRobotModel>(); //robot_dynamics_model.h & dexterous_robot_model.h  
+  op.setRobot(robot_model);                                               //RobotDynamicsModelPtr은 shared_ptr로 만들어져 있기때문에 robot_model은 shared_ptr의 성격을 지니고 있다 
+                                                                          //make_shared<>()를 통해 shared_ptr을 직접 초기화
   Eigen::Vector3d com;
   com << -0.40664, 0.12478, 0.18233;
   Eigen::Affine3d com_T;

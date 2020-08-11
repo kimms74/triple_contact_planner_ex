@@ -5,7 +5,7 @@
 namespace suhan_contact_planner
 {
 
-class DexterousRobotModel : public RobotDynamicsModel
+class DexterousRobotModel : public RobotDynamicsModel //RobotDynamicsModel의 자식 class
 {
 public:
   bool isReachable(Eigen::Vector3d position) override
@@ -17,12 +17,12 @@ public:
   bool isPossibleContact(Eigen::Affine3d transform) override { return true; }
 
   Eigen::Vector3d getMaximumForce();
-  Eigen::Vector3d getMaximumMoment();
+  Eigen::Vector3d getMaximumMoment(); //아직 기능을 안 짠건가??
 
   // for grasp contact
-  Eigen::Matrix<double, 2, 6> getForceLimit() override
+  Eigen::Matrix<double, 2, 6> getForceLimit() override  //부모 class에 있는 함수와 똑같은 이름의 함수를 알아보기 편하게 함수 뒤에 override써주는 것(앞에 virtual쓰는 것과 비슷)
   {
-    Eigen::Matrix<double, 2, 6> limit_matrix;
+    Eigen::Matrix<double, 2, 6> limit_matrix; //Eigen::Matrix<scalar,rows,coloums>  //2x6 matrix
     for (int i = 0; i < 6; i++)
     {
       // limit_matrix(0, i) = 1;

@@ -3,9 +3,9 @@
 namespace suhan_contact_planner
 {
 
-  Eigen::Matrix3d cross_skew(Eigen::Vector3d input)
+  Eigen::Matrix3d cross_skew(Eigen::Vector3d input) //skew-symmetric matrix //cross product 쉽게 만들어준다
   {
-    Eigen::Matrix3d output;
+    Eigen::Matrix3d output; //첫번째 원소를 0으로 시작한다
     output.setZero();
     output(0, 1) = -input(2);
     output(1, 0) = input(2);
@@ -71,7 +71,7 @@ namespace suhan_contact_planner
 
     Eigen::MatrixXd C_max[6];
     Eigen::VectorXd d_max[6];
-    const auto &f_limit = robot_->getForceLimit();
+    const auto &f_limit = robot_->getForceLimit();    //getForceLimit()하면 2x6 matrix을 return한다 
 
     for (int i = 0; i < 6; i++)
     {

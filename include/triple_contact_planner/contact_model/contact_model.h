@@ -92,7 +92,7 @@ protected:                                        //protected: derived class에�
   double mass_ {3.75};
 };
 
-typedef std::shared_ptr<ContactModel> ContactModelPtr;  //shared_ptr:
+typedef std::shared_ptr<ContactModel> ContactModelPtr;  //shared_ptr로 만들면 그 자체가 ptr이므로 *붙일 필요 없다
                                                         //typedef보단 using을 쓰자
 }
 

@@ -8,7 +8,7 @@
 #include <triple_contact_planner/solver/constraint/constraint_inequality.h>
 #include <triple_contact_planner/solver/contact_optimization_solver.h>
 
-namespace suhan_contact_planner
+namespace suhan_contact_planner               //headder 파일에서는 using namespace는 쓰지말자(icnlude하는 모든 파일에 영향을 미치므로)
 {
 
 class ContactOptimization
@@ -23,4 +23,4 @@ private:
   RobotDynamicsModelPtr robot_;
 };
 
-}
+}                                             //contact_optimization.cpp도 확인하기

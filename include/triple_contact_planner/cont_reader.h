@@ -23,9 +23,9 @@ struct ContinuousGraspCandid
       {
         std::pair<Eigen::Vector3d, Eigen::Vector3d> bound;
         std::pair<Eigen::Quaterniond, std::string> rot;
-        bound.first = Eigen::Vector3d::Map(yamlnode["part" + to_string(i + 1)][j]["upper_bound"].as<std::vector<double>>().data());       //yamlnode[][][],
+        bound.first = Eigen::Vector3d::Map(yamlnode["part" + to_string(i + 1)][j]["upper_bound"].as<std::vector<double>>().data());       //yamlnode[][][],?  //vector<double>에서 < >는 class template을 의미
         bound.second = Eigen::Vector3d::Map(yamlnode["part" + to_string(i + 1)][j]["lower_bound"].as<std::vector<double>>().data());      //part0,1,2..은 파지점을 의미
-        rot.first.coeffs() = Eigen::Vector4d::Map(yamlnode["part" + to_string(i + 1)][j]["orientation"].as<std::vector<double>>().data());
+        rot.first.coeffs() = Eigen::Vector4d::Map(yamlnode["part" + to_string(i + 1)][j]["orientation"].as<std::vector<double>>().data());//pair안에 든 것들은 .first, .second로 불러올 수 있다
         rot.second = yamlnode["part" + to_string(i + 1)][j]["ori"].as<std::string>().data();
         double dist = yamlnode["part" + to_string(i + 1)][j]["distance"].as<double>();
         

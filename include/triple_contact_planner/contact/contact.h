@@ -56,5 +56,5 @@ private:
 };
 
 typedef std::shared_ptr<Contact> ContactPtr;  //typedef보단 using 권장
-
+                                              //shared_ptr: ptr가 몇개째인지 세어준다
 }
