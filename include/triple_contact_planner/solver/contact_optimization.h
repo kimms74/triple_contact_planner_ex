@@ -16,11 +16,11 @@ class ContactOptimization
 public:
   void setModel(ContactModelPtr model);       //contact_model.h
   void setRobot(RobotDynamicsModelPtr robot); //robot_dynamics_model.h
-  bool solve();                               //test
+  bool solve();                               //contact_optimization.cpp에 정의돼 있음
 
 private:
   ContactModelPtr model_;
   RobotDynamicsModelPtr robot_;
 };
 
-}                                             //contact_optimization.cpp도 확인하기
+}                                     

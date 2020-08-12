@@ -18,14 +18,14 @@ class ContactOptimizationSolver
 public:
   ContactOptimizationSolver();
   void setContactNumber(int contact_number);
-  void addConstraint(ConstraintBasePtr cb);
+  void addConstraint(ConstraintBasePtr cb); //constraint_base.h
   bool solve(Eigen::VectorXd &result_force);
 
 private:
   qpOASES::SQProblem qproblem_;
 
-  Eigen::MatrixXd H_, A_;
-  Eigen::VectorXd g_;
+  Eigen::MatrixXd H_, A_; //runtime때 size정하는 matrix
+  Eigen::VectorXd g_;     //rutime때 size정하는 vector
 
   MatrixXdRow  H_row_, A_row_;
   Eigen::VectorXd A_lower_bound_, A_upper_bound_, lower_bound_, upper_bound_;
