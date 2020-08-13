@@ -25,7 +25,7 @@ void ConstraintBase::setUpperBound(const Eigen::VectorXd & ub)
 void ConstraintBase::setOnlyLowerBound(const Eigen::VectorXd & lb)
 {
   Eigen::VectorXd ub;
-  ub.setConstant(lb.rows(), std::numeric_limits<double>::max());
+  ub.setConstant(lb.rows(), std::numeric_limits<double>::max());  //lb.row()의 size로 resize한 뒤 max() value를 대입
   
   setLowerBound(lb);
   setUpperBound(ub);

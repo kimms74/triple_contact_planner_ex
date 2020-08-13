@@ -9,7 +9,7 @@ ContactOptimizationSolver::ContactOptimizationSolver()
 
 void ContactOptimizationSolver::addConstraint(ConstraintBasePtr cb)
 {
-  constraints.push_back(cb);
+  constraints.push_back(cb);  //constraints는 vector<>
 }
 
 void ContactOptimizationSolver::setContactNumber(int contact_number)
@@ -18,7 +18,7 @@ void ContactOptimizationSolver::setContactNumber(int contact_number)
 bool ContactOptimizationSolver::solve(Eigen::VectorXd& result_force)
 {
   size_t total_row = 0;
-  for(auto & constraint : constraints)
+  for(auto & constraint : constraints)  
   {
     total_row += constraint->rows();
     assert(contact_number_ * 6 == constraint->cols());
@@ -29,9 +29,9 @@ bool ContactOptimizationSolver::solve(Eigen::VectorXd& result_force)
   size_t A_row_index = 0;
   for(auto & constraint : constraints)
   {
-    A_.block(A_row_index, 0, constraint->rows(), constraint->cols()) =
+    A_.block(A_row_index, 0, constraint->rows(), constraint->cols()) =  //block(i,j,p,q):block size (p,q), startng at (i,j) 출력 (i,j는 0부터 시작, p,q는 0일때 전체)
         constraint->getA();
-    A_lower_bound_.segment(A_row_index, constraint->rows()) =
+    A_lower_bound_.segment(A_row_index, constraint->rows()) =           //vector에서의 block(), segment(i,n): Block containing n elements, starting at position i
         constraint->getLowerBound();
     A_upper_bound_.segment(A_row_index, constraint->rows()) =
         constraint->getUpperBound();
@@ -45,10 +45,10 @@ bool ContactOptimizationSolver::solve(Eigen::VectorXd& result_force)
   
   if(!hot_start_)
   {
-    result = qproblem_.init(H_row_.data(), g_.data(), A_row_.data(),
-                   //lower_bound_.data(), upper_bound_.data(),
+    result = qproblem_.init(H_row_.data(), g_.data(), A_row_.data(),    //.init(),hotstart(): returnvalue를 return
+                   //lower_bound_.data(), upper_bound_.data(),          //returnvalue: enum으로 SUCCESSFUL_RETURN=0,...이다
                             NULL,NULL,
-                   A_lower_bound_.data(), A_upper_bound_.data(), iter);
+                   A_lower_bound_.data(), A_upper_bound_.data(), iter); //iter: mWSR으로 the maximum number of working set recalculations to be perfomed during the initioal homotopy
     hot_start_ = true;
   }
   else
