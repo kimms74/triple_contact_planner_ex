@@ -99,7 +99,7 @@ void ContactOptimizationSolver::resize(int total_row)
   options.printLevel          = qpOASES::PL_NONE;
   options.enableRegularisation = qpOASES::BT_TRUE;
   options.enableEqualities = qpOASES::BT_TRUE;
-  qproblem_ = qpOASES::SQProblem(contact_number_ * 6, total_row); //constact_nuber + s로 만들기
+  qproblem_ = qpOASES::SQProblem(contact_number_ * 6, total_row); //contact_nuber + s로 만들기
   qproblem_.setOptions(options);
 }
 

@@ -10,7 +10,7 @@
 namespace suhan_contact_planner
 {
 
-typedef Eigen::Matrix<double, -1, -1, Eigen::RowMajor> MatrixXdRow;
+typedef Eigen::Matrix<double, -1, -1, Eigen::RowMajor> MatrixXdRow; //MatrixXdRow: 매트릭스에 row부터 값을 넣음
 
 
 class ContactOptimizationSolver
