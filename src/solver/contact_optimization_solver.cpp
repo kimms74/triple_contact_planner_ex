@@ -70,7 +70,7 @@ bool ContactOptimizationSolver::solve(Eigen::VectorXd& result_force)
 
   if (result == qpOASES::SUCCESSFUL_RETURN)
   {
-    qproblem_.getPrimalSolution(x_solved_.data());
+    qproblem_.getPrimalSolution(x_solved_.data());  //해 구하기
     result_force = x_solved_;
     //std::cout << x_solved_.transpose() << std::endl;
     qproblem_.reset();

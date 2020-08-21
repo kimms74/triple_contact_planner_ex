@@ -19,8 +19,8 @@ int main(int argc, char **argv)
   std::string path = ros::package::getPath("triple_contact_planner");     //triple_contact_planner 위치 가져옴
 
   ContinuousGraspCandid grp_top;                                          //cont_reader.h
-  grp_top.loadConfig(path + "/top.yaml");                                 //path로 triple_contact_planner있는 위치 가져오고 뒤에 /top.yaml해서 top.yaml을 불러오는 것
-
+  grp_top.loadConfig(path + "/top.yaml");                               //path로 triple_contact_planner있는 위치 가져오고 뒤에 /top.yaml해서 top.yaml을 불러오는 것
+                                                                                                  //loadConfig:  top.yaml에서 lb,ub,ori,dist 정보를 tuple에 bound,rot,dist로 candids vector에 담고 candids를 candids_set vector에 담는다
   ContinuousGraspCandid grp_bottom;
   grp_bottom.loadConfig(path + "/bottom.yaml");
 
@@ -29,10 +29,10 @@ int main(int argc, char **argv)
   op.setRobot(robot_model);                                               //RobotDynamicsModelPtr은 shared_ptr로 만들어져 있기때문에 robot_model은 shared_ptr의 성격을 지니고 있다 
                                                                           //make_shared<>()를 통해 shared_ptr을 직접 초기화
   Eigen::Vector3d com;
-  com << -0.40664, 0.12478, 0.18233;
-  Eigen::Affine3d com_T;
+  com << -0.40664, 0.12478, 0.18233;                                      //값 대입
+  Eigen::Affine3d com_T;                                                  //affine3d: 4x4 matrix
   com_T.setIdentity();
-  com_T.translation() = -com; //center of mass
+  com_T.translation() = -com;                                             //center of mass
 
   std::vector<ContactPtr> contact_nodes_;
   contact_nodes_.resize(3);
@@ -41,51 +41,51 @@ int main(int argc, char **argv)
     p = make_shared<Contact>();
 
   std::vector<int> links;
-  for (int i = 0; i < grp_bottom.candids_set.size(); i++)
+  for (int i = 0; i < grp_bottom.candids_set.size(); i++)                               //candids_set:tuple을 지닌 vector를 지닌 vector
     links.push_back(i);
 
-  ContactModelPtr model = make_shared<StefanModel>("hi");
+  ContactModelPtr model = make_shared<StefanModel>("hi");                 //contact model 이름을 hi로 설정하고 mass 3.75로 설정
   model->setMass(3.75);
 
-  vector<vector<int>> all_combination = get_combinations_from_vector<int>(links, 2);
+  vector<vector<int>> all_combination = get_combinations_from_vector<int>(links, 2);  //bottom links 중에 2개를 뽑아 조합을 만들어 벡터에 담아준다 ex) (1,3) (0,6) ... -> bottom은 로봇팔 두개로 잡기때문에 파지점을 랜덤으로 뽑아주는것?
   vector<vector<int>> tot_combination;
-  for (auto combination : all_combination)
+  for (auto combination : all_combination)      //auto &combination 안쓴 이유?
   {
-    for (int i = 0; i < 7; i++)
+    for (int i = 0; i < 7; i++)                 //왜 7개 일까? -> top은 로봇팔 하나로만 잡는데 파지점이 7군데라서?
     {
       combination.push_back(i);
-      tot_combination.push_back(combination);
+      tot_combination.push_back(combination);   //combination에 0~6을 push_back한 것을 tot_combination에 넣음 -> 세 팔의 파지점을 정해주는 것?
       combination.pop_back();
     }
   }
 
   vector<vector<double>> ratio_combination;
   vector<double> test;
-  DFS(ratio_combination, test);
+  DFS(ratio_combination, test);                 //test에 0.5를 3개를 넣어 ratio_combination에 넣어준다(선택된 파지부품에서 파지점을 정하는것)
 
   std::ofstream file;
   file.open(path + "/start_static_eq_grp.yaml");
 
   Eigen::IOFormat CommaInitFmt(Eigen::StreamPrecision, Eigen::DontAlignCols, ", ", ", ", "", "", "[", "]");
   int i = 0;
-  tuple<Eigen::Affine3d, std::string, double> result[3];
-  for (auto combination : tot_combination)
+  tuple<Eigen::Affine3d, std::string, double> result[3];        //3군데의 로봇팔에 대한 result를 담음
+  for (auto combination : tot_combination)                                                      //combination vector 자체는 3군데 파지점 조합을 지니고 있다
   {
     for (auto ratio_combi : ratio_combination)
     {
-      for (int j = 0; j < grp_bottom.candids_set[combination[0]].size(); j++)
-      {
-        result[0] = grp_bottom.getGrasp(combination[0], j, ratio_combi[0]);
-        contact_nodes_.at(0)->setTransform(com_T * get<0>(result[0]));
+      for (int j = 0; j < grp_bottom.candids_set[combination[0]].size(); j++)     //combination vector 내에 0,1,2 가 있다, 거기에 해당하는 값은 각각 로봇팔이 파지하는 part_number를 나타낸다
+      {                                                                                                                   //grp_bottom.candids_set[combination[0]].size(): candids_set안에 combination[0] 위치에 있는 candids의 size
+        result[0] = grp_bottom.getGrasp(combination[0], j, ratio_combi[0]);     //combination[i]: tot_combination안에 (1,2,6), (2,3,0) ...으로 다양한 조합의 3군데 파지점이 들어있는데, 그 파지점에 해당하는combination[0]는 첫번째 로봇팔을 의미한다 
+        contact_nodes_.at(0)->setTransform(com_T * get<0>(result[0]));         //
 
         for (int k = 0; k < grp_bottom.candids_set[combination[1]].size(); k++)
         {
-          result[1] = grp_bottom.getGrasp(combination[1], k, ratio_combi[1]);
+          result[1] = grp_bottom.getGrasp(combination[1], k, ratio_combi[1]); //combination[1]: 두번째 로봇팔
           contact_nodes_.at(1)->setTransform(com_T * get<0>(result[1]));
 
           for (int m = 0; m < grp_top.candids_set[combination[2]].size(); m++)
           {
-            result[2] = grp_top.getGrasp(combination[2], m, ratio_combi[2]);
+            result[2] = grp_top.getGrasp(combination[2], m, ratio_combi[2]);  //combination[2]: 세번째 로봇팔
             contact_nodes_.at(2)->setTransform(com_T * get<0>(result[2]));
 
             model->setContactRobot(contact_nodes_);

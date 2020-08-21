@@ -19,7 +19,7 @@ vector<vector<T>> get_combinations_from_vector(vector<T> set, int pick_up){
     vector<int> combination_iterator;
     for(auto i=0;i<pick_up;i++) combination_iterator.push_back(1);
     for(auto i=0ULL;i<set.size()-pick_up;i++) combination_iterator.push_back(0);
-    sort(combination_iterator.begin(), combination_iterator.end());
+    sort(combination_iterator.begin(), combination_iterator.end());                 //작은 숫자-> 큰 숫자로 정렬해준다
 
     //! 매 루프마다 조합을 조립한다.
     do {
@@ -39,12 +39,12 @@ vector<vector<T>> get_combinations_from_vector(vector<T> set, int pick_up){
 // double Arr[9];
 // double Select[9];
 template <typename T>
-void DFS(vector<vector<T>> &combinations, vector<T> &set)
+void DFS(vector<vector<T>> &combinations, vector<T> &set)           //Depth First Search
 {    
     double step_size = 0.5;
     if (set.size() == 3)
     {
-        combinations.push_back(set);
+        combinations.push_back(set);                                
         return;
     }
  
@@ -52,6 +52,6 @@ void DFS(vector<vector<T>> &combinations, vector<T> &set)
     {
         set.emplace_back(i * step_size);
         DFS(combinations, set);
-        set.pop_back();
+        set.pop_back(); 
     }
 }
