@@ -1,10 +1,10 @@
 
   part1:
-    - lower_bound:    [-0.795701, -0.0360957, 0.0193415]
+    - lower_bound:    [-0.795701, -0.0360957, 0.0193415]          #boundary로 표현한 이유: manipulator가 하나의 ori에서 접근할 수 있는 범위
       upper_bound:    [-0.61351, -0.00405059, 0.021751]
       orientation:    [0.730345, 0.059292, 0.0639174, 0.677492]
-      ori:            minusY
-      distance:       0.117141
+      ori:            minusY                                      #좌표축 기준 manipulator가 접근하는 방향을 나타냄
+      distance:       0.117141                                    #boundary 길이
 
     - lower_bound:    [-0.565295, 0.00442991, 0.0223887]
       upper_bound:    [-0.516487, 0.0130147, 0.0230342]

@@ -48,7 +48,7 @@ void DFS(vector<vector<T>> &combinations, vector<T> &set)           //Depth Firs
         return;
     }
  
-    for (int i = 1; i * step_size < 1; ++i)
+    for (int i = 1; i * step_size < 1; ++i) //for문(1;2;3): 1은 초기화, 2는 조건으로 true일때 {}실행, 3은 {}가 끝나면 실행
     {
         set.emplace_back(i * step_size);
         DFS(combinations, set);

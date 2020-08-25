@@ -46,12 +46,12 @@ namespace suhan_contact_planner
     b.setZero(6);
     // b.head<3>() = model_->getTransform().linear() *
     //               Eigen::Vector3d(0, 0, 9.8) * model_->getMass(); // TODO: Check this
-    b.head<3>() =  Eigen::Vector3d(0, 0, 9.8) * model_->getMass(); // TODO: Check this
+    b.head<3>() =  Eigen::Vector3d(0, 0, 9.8) * model_->getMass(); // TODO: Check this          //vector.head<n>(): vector 처음 n개의 elements를 가져옴, vector.tail<n>(): 마지막 n개의 element를 가져옴
     // TODO: Momentum + b(3~5)
     for (size_t i = 0; i < contact_number; i++)
     {
-      A.block<3, 3>(0, i * 6).setIdentity();
-      A.block<3, 3>(3, i * 6) = cross_skew(contacts[i]->getContactTransform().translation());
+      A.block<3, 3>(0, i * 6).setIdentity();                                                                                      //matrix.block<p,q>(i,j): (i,j)부터 시작하는 size(p,q) 매트릭스를 가져와줌
+      A.block<3, 3>(3, i * 6) = cross_skew(contacts[i]->getContactTransform().translation());   //Eigen은 위치를 나타낼 때는 항상 0부터 시작한다
       A.block<3, 3>(3, i * 6 + 3).setIdentity();
     }
     eq_constraint->setA(A);

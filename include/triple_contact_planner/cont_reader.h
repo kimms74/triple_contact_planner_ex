@@ -9,32 +9,32 @@ using namespace std;
 struct ContinuousGraspCandid
 {
   typedef tuple<std::pair<Eigen::Vector3d, Eigen::Vector3d>, std::pair<Eigen::Quaterniond, std::string>, double > grasp_tuple;      //Vector3d: 3x1 double 벡터 //Eigen::Matrix<typename Scalar, int RowsAtCompileTime, int ColsAtCompileTime>
-  std::vector<std::vector<grasp_tuple> > candids_set;                                                                       //candids_set: tuple을 지닌 vector를 지닌 vector  //std::tuple<>에서 <>안에 변수 타입들을 작성하는 것  
+  std::vector<std::vector<grasp_tuple> > candids_set;                                                                               //candids_set: tuple을 지닌 vector를 지닌 vector  //std::tuple<>에서 <>안에 변수 타입들을 작성하는 것  
   void loadConfig(std::string file_name)                                                                                            
 {                                                                                                                                   
-  YAML::Node yamlnode;                                                                                                              //YAML::Node는 
+  YAML::Node yamlnode;                                                                                                              
     yamlnode = YAML::LoadFile(file_name);
     // std::vector<std::pair<std::pair<Eigen::Vector3d, Eigen::Vector3d>, std::pair<Eigen::Quaterniond, std::string> > > candids;
 
     for (int i = 0; i < yamlnode.size(); i++)
     {
       std::vector<grasp_tuple> candids;
-      for (int j = 0; j < yamlnode["part" + std::to_string(i + 1)].size(); j++)                                                                                                         //std::to_string: int를 string으로 변경
+      for (int j = 0; j < yamlnode["part" + std::to_string(i + 1)].size(); j++)                                                               //std::to_string: int를 string으로 변경
       {
         std::pair<Eigen::Vector3d, Eigen::Vector3d> bound;
-        std::pair<Eigen::Quaterniond, std::string> rot;                                                                                                                                           //Map:소속된 class에 해당하는 형태로 데이터를 vector나 matrix로 변환시켜준다
+        std::pair<Eigen::Quaterniond, std::string> rot;                                                                                       //Map:소속된 class에 해당하는 형태로 데이터를 vector나 matrix로 변환시켜준다
         bound.first = Eigen::Vector3d::Map(yamlnode["part" + to_string(i + 1)][j]["upper_bound"].as<std::vector<double>>().data());           //yamlnode[part_num][파지점][원하는정보]  //vector<double>에서 < >는 class template을 의미
-        bound.second = Eigen::Vector3d::Map(yamlnode["part" + to_string(i + 1)][j]["lower_bound"].as<std::vector<double>>().data());      //yaml 파일에 든 ub,lb를 bound에 담아준다
-        rot.first.coeffs() = Eigen::Vector4d::Map(yamlnode["part" + to_string(i + 1)][j]["orientation"].as<std::vector<double>>().data());       //pair안에 든 것들은 .first, .second로 불러올 수 있다
-        rot.second = yamlnode["part" + to_string(i + 1)][j]["ori"].as<std::string>().data();                                                                                   //yaml 파일에 든 orientation과 oir 방향을 각각 first와 second에 담아준다
-        double dist = yamlnode["part" + to_string(i + 1)][j]["distance"].as<double>();                                                                                         //yaml의 dist를 담아준다
+        bound.second = Eigen::Vector3d::Map(yamlnode["part" + to_string(i + 1)][j]["lower_bound"].as<std::vector<double>>().data());          //yaml 파일에 든 ub,lb를 bound에 담아준다
+        rot.first.coeffs() = Eigen::Vector4d::Map(yamlnode["part" + to_string(i + 1)][j]["orientation"].as<std::vector<double>>().data());    //pair안에 든 것들은 .first, .second로 불러올 수 있다
+        rot.second = yamlnode["part" + to_string(i + 1)][j]["ori"].as<std::string>().data();                                                  //yaml 파일에 든 orientation과 oir 방향을 각각 first와 second에 담아준다
+        double dist = yamlnode["part" + to_string(i + 1)][j]["distance"].as<double>();                                                        //yaml의 dist를 담아준다
         
-        grasp_tuple pose = make_tuple(bound, rot, dist);                                                                                                     //tuple인 pose에 bound, rot, dist를 저장
-        candids.push_back(pose);                                                                                                                                         //vector인 candids에 pose 저장
+        grasp_tuple pose = make_tuple(bound, rot, dist);                                                                            //tuple인 pose에 bound, rot, dist를 저장
+        candids.push_back(pose);                                                                                                    //vector인 candids에 pose 저장
         // std::cout << get<0>(pose).first.transpose() << get<0>(pose).second.transpose() << endl                                   //get<0>(pose): tuple인 pose에 저장된 첫번째를 가져와줌 
-        //           << get<1>(pose).second << " " << get<2>(pose) << endl;                                                                         //c++17부터는 auto[a,b,c]=pose를 이용해 tuple values를 쉽게 가져올 수 있다
-      }                                                                                                                                                                                   //.first.transpose(): bound.first행렬을 transpose해준다
-      candids_set.push_back(candids);                                                                                                                                //candids_set에 candids저장
+        //           << get<1>(pose).second << " " << get<2>(pose) << endl;                                                         //c++17부터는 auto[a,b,c]=pose를 이용해 tuple values를 쉽게 가져올 수 있다
+      }                                                                                                                             //.first.transpose(): bound.first행렬을 transpose해준다
+      candids_set.push_back(candids);                                                                                               //candids_set에 candids저장
       // candids.clear();
     }
   }

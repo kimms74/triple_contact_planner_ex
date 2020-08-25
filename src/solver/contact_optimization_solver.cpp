@@ -94,11 +94,11 @@ void ContactOptimizationSolver::resize(int total_row)
   x_solved_.resize(contact_number_ * 6);
   qpOASES::Options options;
 
-  options.setToDefault();
-  options.initialStatusBounds = qpOASES::ST_INACTIVE;
-  options.printLevel          = qpOASES::PL_NONE;
-  options.enableRegularisation = qpOASES::BT_TRUE;
-  options.enableEqualities = qpOASES::BT_TRUE;
+  options.setToDefault();                                                                               //option 초기화
+  options.initialStatusBounds = qpOASES::ST_INACTIVE;                      //Initial status of bounds at first iteration
+  options.printLevel          = qpOASES::PL_NONE;                                   //Print level
+  options.enableRegularisation = qpOASES::BT_TRUE;                           //Specifies whether Hessian matrix shall be regularised in case semi-definiteness is detected
+  options.enableEqualities = qpOASES::BT_TRUE;                                  //Specifies whether equalities shall be always treated as active constraints
   qproblem_ = qpOASES::SQProblem(contact_number_ * 6, total_row); //contact_nuber + s로 만들기
   qproblem_.setOptions(options);
 }
