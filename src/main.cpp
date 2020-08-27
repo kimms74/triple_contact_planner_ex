@@ -77,7 +77,7 @@ int main(int argc, char **argv)
       {                                                                                                                     //grp_bottom.candids_set[i].size(): i번째 part에 해당하는 candids의 크기, 즉 part i는 몇개의 파지점이 있는지를 알려준다
         result[0] = grp_bottom.getGrasp(combination[0], j, ratio_combi[0]);       //combination[i]: tot_combination안에 (1,2,6), (2,3,0) ...으로 다양한 조합의 3군데 part_num이 들어있는데, combination[0]는 첫번째 로봇팔이 선택할 part를 알려준다 
         contact_nodes_.at(0)->setTransform(com_T * get<0>(result[0]));            //combination[0]가 가진 index만큼을 for문을 돌리며 result로 만들어준다
-                                                                                                                            //getGrasp를 하면 com을 중심으로 한 파지점의 정보를 알려준다
+                                                                                                                            //getGrasp를 하면 파지점의 정보를 알려준다
         for (int k = 0; k < grp_bottom.candids_set[combination[1]].size(); k++)
         {
           result[1] = grp_bottom.getGrasp(combination[1], k, ratio_combi[1]);   //combination[1]: 두번째 로봇팔이 선택한 part_num

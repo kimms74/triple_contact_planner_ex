@@ -29,9 +29,9 @@ bool ContactOptimizationSolver::solve(Eigen::VectorXd& result_force)
   size_t A_row_index = 0;
   for(auto & constraint : constraints)
   {
-    A_.block(A_row_index, 0, constraint->rows(), constraint->cols()) =  //block(i,j,p,q):block size (p,q), startng at (i,j) 출력 (i,j는 0부터 시작, p,q는 0일때 전체)
+    A_.block(A_row_index, 0, constraint->rows(), constraint->cols()) =  //block(i,j,p,q): block size (p,q), startng at (i,j) 출력 (i,j는 0부터 시작, p,q는 0일때 전체)
         constraint->getA();
-    A_lower_bound_.segment(A_row_index, constraint->rows()) =           //vector에서의 block(), segment(i,n): Block containing n elements, starting at position i
+    A_lower_bound_.segment(A_row_index, constraint->rows()) =           //segment(i,n): vector에서의 block(), Block containing n elements, starting at position i
         constraint->getLowerBound();
     A_upper_bound_.segment(A_row_index, constraint->rows()) =
         constraint->getUpperBound();

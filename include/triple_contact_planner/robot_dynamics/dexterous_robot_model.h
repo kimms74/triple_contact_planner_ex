@@ -17,7 +17,7 @@ public:
   bool isPossibleContact(Eigen::Affine3d transform) override { return true; }
 
   Eigen::Vector3d getMaximumForce();
-  Eigen::Vector3d getMaximumMoment(); //아직 기능을 안 짠건가??
+  Eigen::Vector3d getMaximumMoment(); 
 
   // for grasp contact
   Eigen::Matrix<double, 2, 6> getForceLimit() override  //부모 class에 있는 함수와 똑같은 이름의 함수를 알아보기 편하게 함수 뒤에 override써주는 것(앞에 virtual쓰는 것과 비슷)
