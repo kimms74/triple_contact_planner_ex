@@ -30,7 +30,7 @@ bool ContactOptimizationSolver::solve(Eigen::VectorXd& result_force)
   for(auto & constraint : constraints)
   {
     A_.block(A_row_index, 0, constraint->rows(), constraint->cols()) =  //block(i,j,p,q): block size (p,q), startng at (i,j) 출력 (i,j는 0부터 시작, p,q는 0일때 전체)
-        constraint->getA();
+        constraint->getA();                                             //A_ 안에 eq와 ineq constraints 다 들어있다
     A_lower_bound_.segment(A_row_index, constraint->rows()) =           //segment(i,n): vector에서의 block(), Block containing n elements, starting at position i
         constraint->getLowerBound();
     A_upper_bound_.segment(A_row_index, constraint->rows()) =
@@ -49,7 +49,7 @@ bool ContactOptimizationSolver::solve(Eigen::VectorXd& result_force)
                    //lower_bound_.data(), upper_bound_.data(),          //returnvalue: enum으로 SUCCESSFUL_RETURN=0,...이다
                             NULL,NULL,
                    A_lower_bound_.data(), A_upper_bound_.data(), iter); //iter: mWSR으로 the maximum number of working set recalculations to be perfomed during the initioal homotopy
-    hot_start_ = true;
+    hot_start_ = true;                                                  //H가 identity matrix일 경우에는 zero or identity matrix를 넣어주면 된다
   }
   else
   {
@@ -99,6 +99,7 @@ void ContactOptimizationSolver::resize(int total_row)
   options.printLevel          = qpOASES::PL_NONE;                                   //Print level
   options.enableRegularisation = qpOASES::BT_TRUE;                           //Specifies whether Hessian matrix shall be regularised in case semi-definiteness is detected
   options.enableEqualities = qpOASES::BT_TRUE;                                  //Specifies whether equalities shall be always treated as active constraints
+  //qproblem_ = qpOASES::SQProblem(contact_number_ * 6, total_row,HST_IDENTITY);
   qproblem_ = qpOASES::SQProblem(contact_number_ * 6, total_row); //contact_nuber + s로 만들기
   qproblem_.setOptions(options);
 }

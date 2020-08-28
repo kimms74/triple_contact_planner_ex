@@ -47,7 +47,7 @@ namespace suhan_contact_planner
     // b.head<3>() = model_->getTransform().linear() *
     //               Eigen::Vector3d(0, 0, 9.8) * model_->getMass(); // TODO: Check this
     b.head<3>() =  Eigen::Vector3d(0, 0, 9.8) * model_->getMass(); // TODO: Check this          //vector.head<n>(): vector 처음 n개의 elements를 가져옴, vector.tail<n>(): 마지막 n개의 element를 가져옴
-    // TODO: Momentum + b(3~5)
+  // TODO: Momentum + b(3~5)                                                                                                    //b는 object에 걸리는 최종 force&torque를 의미한다(upper와 lower로 나눠서 해야한다)
     for (size_t i = 0; i < contact_number; i++)
     {
       A.block<3, 3>(0, i * 6).setIdentity();                                                                                      //matrix.block<p,q>(i,j): (i,j)부터 시작하는 size(p,q) 매트릭스를 가져와줌
@@ -71,7 +71,7 @@ namespace suhan_contact_planner
 
     Eigen::MatrixXd C_max[6];
     Eigen::VectorXd d_max[6];
-    const auto &f_limit = robot_->getForceLimit();    //getForceLimit()하면 2x6 matrix을 return한다 
+    const auto &f_limit = robot_->getForceLimit();    //getForceLimit()하면 2x6 matrix을 return한다
 
     for (int i = 0; i < 6; i++)
     {
