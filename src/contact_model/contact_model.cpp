@@ -1,4 +1,4 @@
-#include "triple_contact_planner/contact_model/contact_model.h"
+#include "triple_contact_planner_ex/contact_model/contact_model.h"
 
 #include <ros/ros.h>
 

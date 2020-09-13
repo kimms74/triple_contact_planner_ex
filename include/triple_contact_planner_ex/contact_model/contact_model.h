@@ -5,7 +5,7 @@
 #include <vector>
 #include <Eigen/Dense>
 
-#include "triple_contact_planner/contact/contact.h"
+#include "triple_contact_planner_ex/contact/contact.h"
 
 namespace suhan_contact_planner
 {

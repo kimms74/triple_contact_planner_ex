@@ -1,4 +1,4 @@
-#include "triple_contact_planner/solver/contact_optimization_solver.h"
+#include "triple_contact_planner_ex/solver/contact_optimization_solver.h"
 
 
 namespace suhan_contact_planner
@@ -27,7 +27,7 @@ bool ContactOptimizationSolver::solve(Eigen::VectorXd& result_force)
    resize(total_row);
 
   size_t A_row_index = 0;
-  for(auto & constraint : constraints)
+  for(auto & constraint : constraints)  //첫번째 요소는 eq_constraint, 두번째 요소는 ineq_constraint가 들어간다
   {
     A_.block(A_row_index, 0, constraint->rows(), constraint->cols()) =  //block(i,j,p,q): block size (p,q), startng at (i,j) 출력 (i,j는 0부터 시작, p,q는 0일때 전체)
         constraint->getA();                                             //A_ 안에 eq와 ineq constraints 다 들어있다

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(triple_contact_planner)
+project(triple_contact_planner_ex)
 
 add_compile_options(-std=c++11)
 
@@ -59,10 +59,10 @@ add_library(${PROJECT_NAME}_lib
 )
 
 add_dependencies(${PROJECT_NAME}_lib ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-# add_dependencies(triple_contact_planner regrasp_constraint_planner)
+# add_dependencies(triple_contact_planner_ex regrasp_constraint_planner)
 
 # link_directories("/home/jiyeong/catkin_ws/devel/lib")
-#set_property(TARGET triple_contact_planner PROPERTY POSITION_INDEPENDENT_CODE ON)
+#set_property(TARGET triple_contact_planner_ex PROPERTY POSITION_INDEPENDENT_CODE ON)
 target_link_libraries (${PROJECT_NAME}_lib
   qpOASES
 )
@@ -92,7 +92,7 @@ install(DIRECTORY include/${PROJECT_NAME}/
 # target_link_libraries (filtering
 #   ${catkin_LIBRARIES}
 #   qpOASES
-#   triple_contact_planner
+#   triple_contact_planner_ex
 #   yaml-cpp
   
 # )

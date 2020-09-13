@@ -4,8 +4,8 @@
 #include <qpOASES.hpp>
 #include <Eigen/Dense>
 #include <memory>
-#include <triple_contact_planner/contact_model/contact_model.h>
-#include <triple_contact_planner/solver/constraint/constraint_base.h>
+#include <triple_contact_planner_ex/contact_model/contact_model.h>
+#include <triple_contact_planner_ex/solver/constraint/constraint_base.h>
 
 namespace suhan_contact_planner
 {

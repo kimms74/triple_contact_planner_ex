@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>triple_contact_planner</name>
+  <name>triple_contact_planner_ex</name>
   <version>0.0.0</version>
-  <description>The triple_contact_planner package</description>
+  <description>The triple_contact_planner_ex package</description>
 
   <maintainer email="psh117@snu.ac.kr">Suhan Park</maintainer>
   <author email="psh117@snu.ac.kr">Suhan Park</author>

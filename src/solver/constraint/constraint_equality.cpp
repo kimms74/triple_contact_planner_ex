@@ -1,4 +1,4 @@
-#include <triple_contact_planner/solver/constraint/constraint_equality.h>
+#include <triple_contact_planner_ex/solver/constraint/constraint_equality.h>
 
 namespace suhan_contact_planner
 {

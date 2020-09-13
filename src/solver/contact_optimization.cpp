@@ -1,4 +1,4 @@
-#include <triple_contact_planner/solver/contact_optimization.h>
+#include <triple_contact_planner_ex/solver/contact_optimization.h>
 
 namespace suhan_contact_planner
 {
@@ -47,7 +47,7 @@ namespace suhan_contact_planner
     // b.head<3>() = model_->getTransform().linear() *
     //               Eigen::Vector3d(0, 0, 9.8) * model_->getMass(); // TODO: Check this
     b.head<3>() =  Eigen::Vector3d(0, 0, 9.8) * model_->getMass(); // TODO: Check this          //vector.head<n>(): vector 처음 n개의 elements를 가져옴, vector.tail<n>(): 마지막 n개의 element를 가져옴
-  // TODO: Momentum + b(3~5)                                                                                                    //b는 object에 걸리는 최종 force&torque를 의미한다(upper와 lower로 나눠서 해야한다)
+  // TODO: Momentum + b(3~5)                                                                                                    
     for (size_t i = 0; i < contact_number; i++)
     {
       A.block<3, 3>(0, i * 6).setIdentity();                                                                                      //matrix.block<p,q>(i,j): (i,j)부터 시작하는 size(p,q) 매트릭스를 가져와줌
@@ -96,13 +96,13 @@ namespace suhan_contact_planner
     {
       Eigen::Matrix<double, 6, 6> R_hat;
       Eigen::Matrix<double, 3, 3> R;
-      R = contact->getContactTransform().linear().transpose();
+      R = contact->getContactTransform().linear().transpose();  //왜 transpose()를 더 해주는 걸까
       R_hat.setZero();
       R_hat.block<3, 3>(0, 0) = R;
       R_hat.block<3, 3>(3, 3) = R;
 
       C_all.block<12, 6>(i * 12, i * 6) = C_i * R_hat;
-      d_all.segment<12>(i * 12) = d_i;
+      d_all.segment<12>(i * 12) = d_i;                //segment<12>(i*12):i*12부터 12개 가져옴
 
       i++;
     }

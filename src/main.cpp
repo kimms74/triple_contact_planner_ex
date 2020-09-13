@@ -1,12 +1,12 @@
 #include <iostream>
 #include <fstream>
-#include "triple_contact_planner/robot_dynamics/dexterous_robot_model.h"
-#include "triple_contact_planner/solver/contact_optimization.h"
-#include "triple_contact_planner/cont_reader.h"
-#include "triple_contact_planner/contact_model/stefan_model.h"
+#include "triple_contact_planner_ex/robot_dynamics/dexterous_robot_model.h"
+#include "triple_contact_planner_ex/solver/contact_optimization.h"
+#include "triple_contact_planner_ex/cont_reader.h"
+#include "triple_contact_planner_ex/contact_model/stefan_model.h"
 #include <ros/ros.h>
 #include <algorithm>
-#include "triple_contact_planner/permutation.h"
+#include "triple_contact_planner_ex/permutation.h"
 
 #include <ros/package.h>
 using namespace std;
@@ -16,7 +16,7 @@ int main(int argc, char **argv)
 {
   ros::init(argc, argv, "suhan_contact_planner_ex");
   ros::NodeHandle nh;
-  std::string path = ros::package::getPath("triple_contact_planner");     //triple_contact_planner 위치 가져옴
+  std::string path = ros::package::getPath("triple_contact_planner_ex");     //triple_contact_planner 위치 가져옴
 
   ContinuousGraspCandid grp_top;                                            //cont_reader.h
   grp_top.loadConfig(path + "/top.yaml");                                 //path로 triple_contact_planner있는 위치 가져오고 뒤에 /top.yaml해서 top.yaml을 불러오는 것
@@ -113,7 +113,7 @@ int main(int argc, char **argv)
                 //   get<0>(result[t]).translation() += get<0>(result[t]).linear() * Eigen::Vector3d(0, 0, -0.103);
 
                 Eigen::VectorXd t1(7), t2(7), t3(7);
-                t1 << get<0>(result[0]).translation()+ get<0>(result[0]).linear()*Eigen::Vector3d(0, 0, -0.103), 
+                t1 << get<0>(result[0]).translation()+ get<0>(result[0]).linear()*Eigen::Vector3d(0, 0, -0.103), //ori가 나타내는게 end effector의 z축이 다가가는 방향인가?
                       Eigen::Quaterniond(get<0>(result[0]).linear()).coeffs();
                 t2 << get<0>(result[1]).translation()+ get<0>(result[1]).linear()*Eigen::Vector3d(0, 0, -0.103),
                       Eigen::Quaterniond(get<0>(result[1]).linear()).coeffs();
@@ -134,9 +134,9 @@ int main(int argc, char **argv)
                 //  << get<0>(result[1]).matrix() << endl
                 //  << "  transform3 : " << endl
                 //  << get<0>(result[2]).matrix() << endl;
-                // file << "      force 1 : " << contact_nodes_.at(0)->getContactForceTorque().transpose().format(CommaInitFmt) << endl
-                //      << "      force 2 : " << contact_nodes_.at(1)->getContactForceTorque().transpose().format(CommaInitFmt) << endl
-                //      << "      force 3: " << contact_nodes_.at(2)->getContactForceTorque().transpose().format(CommaInitFmt) << endl;
+                 file << "      force 1 : " << contact_nodes_.at(0)->getContactForceTorque().transpose().format(CommaInitFmt) << endl
+                      << "      force 2 : " << contact_nodes_.at(1)->getContactForceTorque().transpose().format(CommaInitFmt) << endl
+                      << "      force 3: " << contact_nodes_.at(2)->getContactForceTorque().transpose().format(CommaInitFmt) << endl;
                 i++;
               }
 

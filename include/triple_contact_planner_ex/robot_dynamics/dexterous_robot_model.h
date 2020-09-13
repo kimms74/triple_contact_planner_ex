@@ -1,6 +1,6 @@
 #pragma once
 
-#include "triple_contact_planner/robot_dynamics/robot_dynamics_model.h"
+#include "triple_contact_planner_ex/robot_dynamics/robot_dynamics_model.h"
 
 namespace suhan_contact_planner
 {
@@ -27,8 +27,8 @@ public:
     {
       // limit_matrix(0, i) = 1;
       // limit_matrix(1, i) = -10;
-      limit_matrix(0, i) = -20;
-      limit_matrix(1, i) = -20;
+      limit_matrix(0, i) = -20;               //min:-20
+      limit_matrix(1, i) = -20;               //max:20
     }
     return limit_matrix;
   }
