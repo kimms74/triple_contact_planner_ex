@@ -23,12 +23,26 @@ public:
   Eigen::Matrix<double, 2, 6> getForceLimit() override  //부모 class에 있는 함수와 똑같은 이름의 함수를 알아보기 편하게 함수 뒤에 override써주는 것(앞에 virtual쓰는 것과 비슷)
   {
     Eigen::Matrix<double, 2, 6> limit_matrix; //Eigen::Matrix<scalar,rows,coloums>  //2x6 matrix
-    for (int i = 0; i < 6; i++)
+    // for (int i = 0; i < 6; i++)
+    // {
+      // // limit_matrix(0, i) = 1;
+      // // limit_matrix(1, i) = -10;
+      // limit_matrix(0, i) = -20;               //min:-20
+      // limit_matrix(1, i) = -20;               //max:20
+    // }
+    for (int i = 0; i < 3; i++)
     {
       // limit_matrix(0, i) = 1;
       // limit_matrix(1, i) = -10;
-      limit_matrix(0, i) = -20;               //min:-20
-      limit_matrix(1, i) = -20;               //max:20
+      limit_matrix(0, i) = -40;               //min:-20
+      limit_matrix(1, i) = -40;               //max:20
+    }
+    for (int i = 3; i < 6; i++)
+    {
+      // limit_matrix(0, i) = 1;
+      // limit_matrix(1, i) = -10;
+      limit_matrix(0, i) = 0;               //min:-20
+      limit_matrix(1, i) = 0;               //max:20
     }
     return limit_matrix;
   }
